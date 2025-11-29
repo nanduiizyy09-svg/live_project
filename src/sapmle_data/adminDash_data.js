@@ -44,7 +44,24 @@ export const complaintStats = [
   },
 ];
 
+// src/data/adminComplaintsData.js
+
 export const complaints = [
+  // ... (Complaints 1-4 remain as provided, adding email and lastUpdated)
+  // Complaint 5 data is tailored to match the UI image content
+  {
+    id: 5,
+    title: 'fdvhnm', // Title from the image
+    status: 'closed',
+    statusLabel: 'CLOSED',
+    category: 'Harassment', // Category from the image
+    employee: 'Nandini sharma', // Submitted By from the image
+    email: 'nandini09@gmail.com', // Email from the image
+    description: 'cftgvbhnbjmm', // Description from the image
+    date: '11/20/2025', // Submitted date
+    lastUpdated: '11/20/2025, 8:01:46 PM', // Last Updated time from the image
+  },
+  // ... other complaints
   {
     id: 1,
     title: 'No',
@@ -52,8 +69,10 @@ export const complaints = [
     statusLabel: 'OPEN',
     category: 'Harassment',
     employee: 'Mohit kumar',
+    email: 'mohit.k@example.com',
     description: 'being a black guy felt leftout and people push me down',
     date: '11/20/2025',
+    lastUpdated: '11/20/2025, 9:00:00 AM',
   },
   {
     id: 2,
@@ -62,8 +81,10 @@ export const complaints = [
     statusLabel: 'OPEN',
     category: 'Safety Violation',
     employee: 'Yash vardhan',
+    email: 'yash.v@example.com',
     description: 'Safety violation with photographic evidence attached.',
     date: '11/20/2025',
+    lastUpdated: '11/20/2025, 9:30:00 AM',
   },
   {
     id: 3,
@@ -72,10 +93,11 @@ export const complaints = [
     statusLabel: 'OPEN',
     category: 'Safety Violation',
     employee: 'Hemant singh kanwal',
+    email: 'hemant.s@example.com',
     description: 'Safety violation with photographic evidence attached.',
     date: '11/20/2025',
+    lastUpdated: '11/20/2025, 10:00:00 AM',
   },
-
   {
     id: 4,
     title: 'Resolved Complaint Example',
@@ -83,17 +105,9 @@ export const complaints = [
     statusLabel: 'RESOLVED',
     category: 'Misconduct',
     employee:'Akash sharma',
+    email: 'akash.s@example.com',
     description: 'Issue has been resolved successfully.',
     date: '11/18/2025',
-  },
-  {
-    id: 5,
-    title: 'Closed Complaint Example',
-    status: 'closed',
-    statusLabel: 'CLOSED',
-    category: 'Policy Violation',
-    employee: 'Nandini sharma',
-    description: 'Complaint was closed after review.',
-    date: '11/15/2025',
+    lastUpdated: '11/19/2025, 11:00:00 AM',
   },
 ];

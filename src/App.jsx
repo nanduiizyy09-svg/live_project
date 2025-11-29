@@ -10,6 +10,7 @@ import U_ComplaintDetail from "./pages/U_ComplaintDetail";
 import A_ComplaintDetail from "./pages/A_ComplaintDetail";
 import SuperAdmin from "./pages/SuperAdmin";
 
+
 function App() {
   
   return (
@@ -17,8 +18,8 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/SuperAdmin/Dashboard" element={<SuperAdmin />} />
-        <Route path="/User/ComplaintDetail" element={<U_ComplaintDetail />} />
-        <Route path="/Admin/ComplainDetail" element={<A_ComplaintDetail />} />
+        <Route path="/User/ComplaintDetail/:id" element={<U_ComplaintDetail />} />
+        <Route path="/Admin/ComplainDetail/:id" element={<A_ComplaintDetail />} />
         <Route path="/Login" element={<AuthForm/>} />
         <Route path="/User/Dashboard" element={<UserDash />} />
         <Route path="/Admin/Dashboard" element={<AdminDash />} />
