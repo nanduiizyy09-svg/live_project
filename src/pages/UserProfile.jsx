@@ -1,148 +1,180 @@
-// src/UserProfilePage.jsx
-import React from "react";
+import React, { useState } from "react";
+import { LogOut, User, LayoutDashboard, Mail, Calendar, Shield, Phone, MapPin, Edit2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-const navItems = [
-  { label: "Dashboard", active: false, icon: "dashboard" },
-  { label: "Profile", active: true, icon: "profile" },
-  { label: "Logout", active: false, icon: "logout" },
-];
+export default function UserProfile() {
+  const navigate = useNavigate();
 
-const Icon = ({ type }) => {
-  if (type === "dashboard") {
-    return (
-      <svg
-        className="h-5 w-5"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      >
-        <rect x="3" y="3" width="8" height="8" rx="2" />
-        <rect x="13" y="3" width="8" height="5" rx="2" />
-        <rect x="13" y="10" width="8" height="11" rx="2" />
-        <rect x="3" y="13" width="8" height="8" rx="2" />
-      </svg>
-    );
-  }
-  if (type === "profile") {
-    return (
-      <svg
-        className="h-5 w-5"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      >
-        <circle cx="12" cy="8" r="3.2" />
-        <path d="M6 19.2c.9-2.3 3-3.8 6-3.8s5.1 1.5 6 3.8" />
-      </svg>
-    );
-  }
-  if (type === "logout") {
-    return (
-      <svg
-        className="h-5 w-5"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      >
-        <path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4" />
-        <path d="M15 16l3-3-3-3" />
-        <path d="M18 13H10" />
-      </svg>
-    );
-  }
-  return null;
-};
+  // Default images
+  const defaultCover = "radial-gradient(circle at top left, #3b82f6, #1e3a8a)";
+  const defaultProfile = "https://randomuser.me/api/portraits/women/32.jpg";
 
-const UserProfilePage = () => {
+  // State for edited images (only session storage)
+  const [coverPhoto, setCoverPhoto] = useState(null);
+  const [profilePhoto, setProfilePhoto] = useState(null);
+
+  // Handle cover upload
+  const handleCoverUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setCoverPhoto(url);
+      localStorage.setItem("coverPhoto", url);
+    }
+  };
+
+  // Handle profile upload
+  const handleProfileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setProfilePhoto(url);
+      localStorage.setItem("profilePhoto", url);
+    }
+  };
+
+  // Reset localStorage after refresh (default on reload)
+  React.useEffect(() => {
+    return () => {
+      localStorage.removeItem("coverPhoto");
+      localStorage.removeItem("profilePhoto");
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen flex bg-slate-100 text-slate-900">
-      <aside className="w-72 bg-slate-800 text-slate-50 rounded-r-3xl m-4 flex flex-col">
-        <div className="flex items-center gap-3 px-6 py-6 border-b border-slate-700">
-          <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center">
-            <span className="text-xl font-semibold">▶</span>
-          </div>
-          <span className="text-xl font-semibold tracking-wide">COMPANY</span>
-        </div>
+    <div className="w-full min-h-screen bg-gray-50 flex flex-col">
 
-        <nav className="flex-1 py-4">
-          <ul className="space-y-1">
-            {navItems.map((item) => (
-              <li key={item.label}>
-                <button
-                  className={`w-full flex items-center gap-3 px-6 py-3 text-sm font-medium transition ${
-                    item.active
-                      ? "bg-slate-700/80 text-white"
-                      : "text-slate-100/80 hover:bg-slate-700/70"
-                  }`}
-                >
-                  <Icon type={item.icon} />
-                  <span>{item.label}</span>
-                </button>
-              </li>
-            ))}
+      {/* Cover Photo */}
+      <div
+        className="w-full h-48 relative shadow-md"
+        style={{
+          background: coverPhoto || defaultCover,
+          backgroundSize: coverPhoto ? "cover" : "unset",
+        }}
+      >
+        {/* Cover Edit Icon */}
+        <label className="absolute top-2 right-2 bg-gray-300 bg-opacity-40 backdrop-blur-sm p-1 rounded-full shadow cursor-pointer hover:bg-gray-400 transition">
+          <Edit2 size={16} />
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleCoverUpload}
+          />
+        </label>
+
+        {/* Profile Photo */}
+        <img
+          src={profilePhoto || defaultProfile}
+          alt="Profile"
+          className="w-28 h-28 md:w-32 md:h-32 rounded-full border-4 border-white absolute left-4 md:left-10 -bottom-14 md:-bottom-16 shadow-xl object-cover"
+        />
+
+        {/* Profile Edit Icon */}
+       <label className="absolute left-24 bottom-2 md:left-33 bottom-0 translate-y-16 bg-gray-300 bg-opacity-40 backdrop-blur-sm p-1 rounded-full shadow cursor-pointer hover:bg-gray-400 transition">
+  <Edit2 size={16} />
+
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleProfileUpload}
+          />
+        </label>
+      </div>
+
+      {/* Main Layout */}
+      <div className="flex flex-col-reverse md:flex-row w-full mt-20 p-3 md:p-6 gap-4 md:gap-6">
+
+        {/* Sidebar */}
+        <div className="w-full md:w-64 bg-white shadow-md rounded-2xl p-4 md:p-5 md:sticky md:top-28">
+          <ul className="space-y-3 md:space-y-4 text-base md:text-lg font-medium flex md:block justify-between md:justify-start">
+            <li
+              className="flex items-center gap-2 hover:text-blue-600 cursor-pointer transition"
+              onClick={() => navigate("/User/Dashboard")}
+            >
+              <LayoutDashboard size={20} /> Dashboard
+            </li>
+
+            <li
+              className="flex items-center gap-2 hover:text-blue-600 cursor-pointer transition bg-gray-200 rounded"
+              onClick={() => navigate("/User/Profile")}
+            >
+              <User size={20} /> Profile
+            </li>
+
+            <li
+              className="flex items-center gap-2 hover:text-red-500 cursor-pointer transition"
+              onClick={() => navigate("/Login")}
+            >
+              <LogOut size={20} /> Logout
+            </li>
           </ul>
-        </nav>
-      </aside>
-
-      <main className="flex-1 m-4 ml-0">
-        <div className="h-full w-full bg-white rounded-3xl shadow-sm px-12 py-10">
-          <h1 className="text-3xl font-semibold tracking-tight">User Profile</h1>
-
-          <div className="mt-8 flex flex-col items-center">
-            <img
-              src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=200"
-              alt="Profile"
-              className="h-28 w-28 rounded-full object-cover"
-            />
-            <h2 className="mt-4 text-2xl font-semibold">John Doe</h2>
-            <p className="mt-1 text-sm text-slate-500">
-              johndoe@example.com
-            </p>
-          </div>
-
-          <div className="mt-10 max-w-3xl mx-auto space-y-8">
-            <section className="bg-slate-50 border border-slate-200 rounded-2xl px-8 py-6">
-              <div className="grid grid-cols-[auto,1fr] gap-x-16 gap-y-5 text-sm">
-                <div className="font-medium text-slate-600">Name</div>
-                <div className="text-slate-900">John Doe</div>
-
-                <div className="font-medium text-slate-600">Email</div>
-                <div className="text-slate-900">johndoe@example.com</div>
-
-                <div className="font-medium text-slate-600">Role</div>
-                <div className="text-slate-900">Administrator</div>
-
-                <div className="font-medium text-slate-600">Created At</div>
-                <div className="text-slate-900">March 15, 2023</div>
-              </div>
-            </section>
-
-            <section className="bg-slate-50 border border-slate-200 rounded-2xl px-8 py-6">
-              <h3 className="text-base font-semibold text-slate-800">
-                Complaints Submitted
-              </h3>
-              <div className="mt-5 grid grid-cols-2 gap-y-4 gap-x-16 text-sm">
-                <div className="font-medium text-slate-600">Solved</div>
-                <div className="text-slate-900">18</div>
-
-                <div className="font-medium text-slate-600">Closed</div>
-                <div className="text-slate-900">5</div>
-
-                <div className="font-medium text-slate-600">Open</div>
-                <div className="text-slate-900">7</div>
-
-                <div className="font-medium text-slate-600">In Progress</div>
-                <div className="text-slate-900">2</div>
-              </div>
-            </section>
-          </div>
         </div>
-      </main>
+
+        {/* Main Content */}
+        <div className="flex-1 space-y-5 md:space-y-6">
+
+          {/* User Information */}
+          <div className="bg-white shadow-md rounded-2xl p-4 md:p-6">
+            <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center gap-2">
+              <User size={22} /> User Information
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 text-gray-700 text-sm md:text-base">
+              <p className="flex items-center gap-2">
+                <User size={18} className="text-blue-600" />
+                <span className="font-semibold">Name:</span> Nandini Sharma
+              </p>
+
+              <p className="flex items-center gap-2">
+                <Shield size={18} className="text-blue-600" />
+                <span className="font-semibold">Role:</span> Admin
+              </p>
+
+              <p className="flex items-center gap-2">
+                <Phone size={18} className="text-blue-600" />
+                <span className="font-semibold">Phone:</span> +91 9876543210
+              </p>
+
+              <p className="flex items-center gap-2">
+                <MapPin size={18} className="text-blue-600" />
+                <span className="font-semibold">Location:</span> India
+              </p>
+            </div>
+          </div>
+
+          {/* Account Information */}
+          <div className="bg-white shadow-md rounded-2xl p-4 md:p-6">
+            <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center gap-2">
+              <Mail size={22} /> Account Information
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 text-gray-700 text-sm md:text-base">
+              <p className="flex items-center gap-2">
+                <Mail size={18} className="text-indigo-600" />
+                <span className="font-semibold">Email:</span> nandini@example.com
+              </p>
+
+              <p className="flex items-center gap-2">
+                <Calendar size={18} className="text-indigo-600" />
+                <span className="font-semibold">Joined:</span> 12 March 2024
+              </p>
+
+              <p className="flex items-center gap-2">
+                <Shield size={18} className="text-indigo-600" />
+                <span className="font-semibold">Status:</span> Active
+              </p>
+
+              <p className="flex items-center gap-2">
+                <Calendar size={18} className="text-indigo-600" />
+                <span className="font-semibold">Last Login:</span> 28 Nov 2025
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
   );
-};
-
-export default UserProfilePage;
+}
