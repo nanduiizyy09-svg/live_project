@@ -16,7 +16,9 @@ function App() {
   return (
       <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/SuperAdmin/Dashboard" element={<SuperAdmin/>} />
+
+        <Route path="/Home" element={<LandingPage />} />
         <Route path="/SuperAdmin/Dashboard" element={<SuperAdmin />} />
         <Route path="/User/ComplaintDetail/:id" element={<U_ComplaintDetail />} />
         <Route path="/Admin/ComplainDetail/:id" element={<A_ComplaintDetail />} />
